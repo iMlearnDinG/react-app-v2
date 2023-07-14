@@ -20,7 +20,7 @@ function Register() {
     };
 
     axios
-      .post('http://localhost:5000/api/register', userData)
+      .post('/api/register', userData)
       .then((res) => {
         setError('Signup was successful');
       })

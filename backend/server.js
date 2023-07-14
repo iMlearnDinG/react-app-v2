@@ -31,7 +31,6 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 
-
 // Connect to MongoDB
 mongoose.connect(mongoDBURL, {
   useNewUrlParser: true,
@@ -45,6 +44,15 @@ db.once('open', () => {
 
 // Mount API routes
 app.use('/api', apiRoutes); // Mount the API routes under the '/api' prefix
+
+// Add /api/auth route
+app.get('/api/auth', (req, res) => {
+  if (req.isAuthenticated()) {
+    res.json({ isAuthenticated: true });
+  } else {
+    res.json({ isAuthenticated: false });
+  }
+});
 
 // Error handling middleware
 app.use((err, req, res, next) => {

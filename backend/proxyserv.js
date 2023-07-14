@@ -15,7 +15,7 @@ const frontendPort = 3000; // Update with your frontend server port
 const frontendUrl = `http://localhost:${frontendPort}`;
 
 // Proxy API requests to the backend server
-app.use('/api', (req, res) => {
+app.use('/', (req, res) => {
   console.log(`New connection through /api to ${backendUrl}`);
   proxyScript.web(req, res, { target: backendUrl });
 });

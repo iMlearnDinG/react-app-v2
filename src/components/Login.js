@@ -14,12 +14,14 @@ function Login() {
     setError(null);
 
     // Make a POST request to the server with the user's input
-    const response = await fetch('http://localhost:5000/api/login', {
+    const response = await fetch('/api/login', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ username, password }),
-      credentials: 'include', // Include cookies in the request
+      credentials: 'include',
     });
+    console.log(response);
+
 
     const data = await response.json(); // Parse the JSON response
 

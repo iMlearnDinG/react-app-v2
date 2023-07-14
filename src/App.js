@@ -1,10 +1,42 @@
-import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { BrowserRouter as Router, Routes, Route, useNavigate } from 'react-router-dom';
 import Login from './components/Login';
 import Register from './components/Register';
 import Lobby from './components/Lobby';
 import Game from './components/Game';
 import Menu from './components/Menu';
+
+// PrivateRoute component
+function PrivateRoute({ children }) {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    fetch('/api/auth')
+      .then((res) => res.json())
+      .then((data) => {
+        setIsAuthenticated(data.isAuthenticated);
+        setIsLoading(false);
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+        setIsLoading(false);
+      });
+  }, []);
+
+  // If isLoading is true, show "Loading..."
+  // If user is authenticated, show the passed children
+  // If not authenticated, redirect to login
+  if (isLoading) {
+    return <div>Loading...</div>;
+  } else if (!isAuthenticated) {
+    navigate('/login', { replace: true });
+    return null;
+  } else {
+    return children;
+  }
+}
 
 function App() {
   return (
@@ -14,13 +46,14 @@ function App() {
           <Route path="/" element={<Login />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
-          <Route path="/lobby" element={<Lobby />} />
-          <Route path="/game" element={<Game />} />
-          <Route path="/menu" element={<Menu />} />
+          <Route path="/lobby" element={<PrivateRoute><Lobby /></PrivateRoute>} />
+          <Route path="/game" element={<PrivateRoute><Game /></PrivateRoute>} />
+          <Route path="/menu" element={<PrivateRoute><Menu /></PrivateRoute>} />
         </Routes>
       </div>
     </Router>
   );
 }
+
 
 export default App;

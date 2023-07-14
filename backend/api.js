@@ -1,9 +1,19 @@
 const express = require('express');
+const passport = require('../backend/config/passport-setup');
 const { getIO } = require('../backend/socket');
 const { body, validationResult } = require('express-validator');
 const bcrypt = require('bcrypt');
 const User = require('../backend/models/User');
 const router = express.Router();
+
+// Middleware to check if a user is authenticated
+function checkAuthenticated(req, res, next) {
+  if (req.isAuthenticated()) {
+    return next();
+  }
+
+  res.status(401).json({ error: 'Not authenticated' });
+}
 
 router.post(
   '/login',
@@ -12,41 +22,15 @@ router.post(
     body('username').trim().notEmpty().withMessage('Username is required'),
     body('password').trim().notEmpty().withMessage('Password is required'),
   ],
-  async (req, res) => {
-    // Check for validation errors
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
-    }
-
-    const { username, password } = req.body;
-
-    try {
-      // Find the user in the database
-      const user = await User.findOne({ username });
-
-      // If the user doesn't exist, return an error
-      if (!user) {
-        return res.status(400).json({ error: 'Invalid username or password' });
-      }
-
-      // Check if the password is correct
-      const isPasswordValid = await bcrypt.compare(password, user.password);
-
-      // If the password is incorrect, return an error
-      if (!isPasswordValid) {
-        return res.status(400).json({ error: 'Invalid username or password' });
-      }
-
-      // Authentication successful
-      // Perform any additional authentication logic here
-
-      // Return a success message or relevant user data
-      return res.json({ message: 'Login successful', user });
-    } catch (error) {
-      console.error(error);
-      return res.status(500).json({ error: 'Internal Server Error' });
-    }
+  function (req, res, next) {
+    passport.authenticate('local', function(err, user, info) {
+      if (err) { return next(err); }
+      if (!user) { return res.status(400).json({ error: 'Invalid username or password' }); }
+      req.logIn(user, function(err) {
+        if (err) { return next(err); }
+        return res.json({ message: 'Login successful', user });
+      });
+    })(req, res, next);
   }
 );
 
@@ -91,11 +75,21 @@ router.post(
   }
 );
 
-router.get('/user', (req, res) => {
-  // Handle API endpoint for fetching user data
+router.get('/auth', (req, res) => {
+  if (req.user) {
+    return res.json({ isAuthenticated: true, user: req.user });
+  } else {
+    return res.json({ isAuthenticated: false });
+  }
 });
 
-router.post('/message', (req, res) => {
+
+router.get('/user', checkAuthenticated, (req, res) => {
+  // Handle API endpoint for fetching user data
+  res.json(req.user);
+});
+
+router.post('/message', checkAuthenticated, (req, res) => {
   const { roomId, message } = req.body;
 
   // Emit the message to the room using socket.io
