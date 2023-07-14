@@ -62,11 +62,3 @@ const server = app.listen(serverPort, () => {
 
 // Initialize socket.io
 initSocket(server);
-
-// Graceful shutdown
-process.on('SIGINT', () => {
-  db.close(() => {
-    console.log('MongoDB connection closed');
-    process.exit(0);
-  });
-});
