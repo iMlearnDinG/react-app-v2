@@ -5,6 +5,7 @@ import Register from './components/Register';
 import Lobby from './components/Lobby';
 import Game from './components/Game';
 import Menu from './components/Menu';
+import SessionRenewal from './SessionRenewal';
 
 // PrivateRoute component
 function PrivateRoute({ children }) {
@@ -55,5 +56,4 @@ function App() {
   );
 }
 
-
-export default App;
+export default SessionRenewal(App); // Wrap the App component with the HOC

@@ -6,6 +6,10 @@ const bcrypt = require('bcrypt');
 const User = require('../backend/models/User');
 const router = express.Router();
 
+const bunyan = require('bunyan');
+const log = bunyan.createLogger({name: 'myapp'});
+
+
 // Middleware to check if a user is authenticated
 function checkAuthenticated(req, res, next) {
   if (req.isAuthenticated()) {
@@ -33,6 +37,21 @@ router.post(
     })(req, res, next);
   }
 );
+
+router.post('/logout', (req, res) => {
+  req.logout();
+  req.session.destroy((err) => {
+    if (err) {
+      log.error(err);
+      return res.status(500).json({ error: 'Internal Server Error' });
+    }
+
+    res.json({ message: 'Logged out' });
+  });
+});
+
+// ...
+
 
 router.post(
   '/register',
@@ -69,11 +88,23 @@ router.post(
 
       return res.json({ message: 'Registration successful' });
     } catch (error) {
-      console.error(error);
+      log.error(error);
       return res.status(500).json({ error: 'Internal Server Error' });
     }
   }
 );
+
+router.post('/renew-session', (req, res) => {
+  if (req.session) {
+    // Reset the session expiry
+    req.session.cookie.maxAge = 5 * 60 * 1000; // 5 minutes
+    res.json({ message: 'Session renewed' });
+  } else {
+    res.status(401).json({ error: 'Not authenticated' });
+  }
+});
+
+
 
 router.get('/auth', (req, res) => {
   if (req.user) {

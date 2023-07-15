@@ -3,6 +3,17 @@ const httpProxy = require('http-proxy');
 const path = require('path');
 require('dotenv').config({ path: "C:\\Users\\User\\PycharmProjects\\react-app-v2\\.env" });
 
+const bunyan = require('bunyan');
+const log = bunyan.createLogger({
+    name: 'react-proxy',
+    streams: [
+        {
+            level: 'info',
+            path: 'C:\\logs\\proxy.txt'  // log INFO and above to a file
+        }
+    ]
+});
+
 const app = express();
 const proxyScript = httpProxy.createProxyServer();
 
@@ -16,19 +27,19 @@ const frontendUrl = `http://localhost:${frontendPort}`;
 
 // Proxy API requests to the backend server
 app.use('/', (req, res) => {
-  console.log(`New connection through /api to ${backendUrl}`);
+  log.info(`New connection through /api to ${backendUrl}`);
   proxyScript.web(req, res, { target: backendUrl });
 });
 
 // Proxy all other requests to the frontend server
 app.use((req, res) => {
-  console.log(`New connection to frontend: ${frontendUrl}`);
+  log.info(`New connection to frontend: ${frontendUrl}`);
   proxyScript.web(req, res, { target: frontendUrl });
 });
 
 // Error handling for the proxyScript server
 proxyScript.on('error', (err, req, res) => {
-  console.error('Proxy Error:', err);
+  log.error({ err }, 'Proxy Error');
   if (!res.headersSent) {
     res.status(500).send('Proxy Error');
   }
@@ -46,5 +57,5 @@ app.get('*', (req, res) => {
 // Start the server
 const port = process.env.PROXY_PORT; // Choose a port number for the reverse proxy server
 app.listen(port, () => {
-  console.log(`Proxy server running on port ${port}`);
+  log.info(`Proxy server running on port ${port}`);
 });
