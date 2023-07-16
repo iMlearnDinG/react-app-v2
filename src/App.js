@@ -7,7 +7,6 @@ import Game from './components/Game';
 import Menu from './components/Menu';
 import SessionRenewal from './SessionRenewal';
 
-// PrivateRoute component
 function PrivateRoute({ children }) {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
@@ -17,7 +16,7 @@ function PrivateRoute({ children }) {
     fetch('/api/auth')
       .then((res) => res.json())
       .then((data) => {
-        setIsAuthenticated(data.isAuthenticated);
+        setIsAuthenticated(data.data.isAuthenticated);
         setIsLoading(false);
       })
       .catch((error) => {
@@ -26,9 +25,6 @@ function PrivateRoute({ children }) {
       });
   }, []);
 
-  // If isLoading is true, show "Loading..."
-  // If user is authenticated, show the passed children
-  // If not authenticated, redirect to login
   if (isLoading) {
     return <div>Loading...</div>;
   } else if (!isAuthenticated) {
@@ -56,4 +52,4 @@ function App() {
   );
 }
 
-export default SessionRenewal(App); // Wrap the App component with the HOC
+export default SessionRenewal(App);

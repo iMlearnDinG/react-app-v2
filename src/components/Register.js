@@ -6,11 +6,11 @@ function Register() {
   const navigate = useNavigate();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [error, setError] = useState(null);
+  const [errors, setErrors] = useState([]);
 
   const register = () => {
     if (!username || !password) {
-      setError('Please provide a username and password.');
+      setErrors(['Please provide a username and password.']);
       return;
     }
 
@@ -22,17 +22,21 @@ function Register() {
     axios
       .post('/api/register', userData)
       .then((res) => {
-        setError('Signup was successful');
+        if (res.data.success) {
+          navigate('/login', { replace: true });
+        } else {
+          setErrors(res.data.error);
+        }
       })
       .catch((error) => {
         console.log(error);
-        let errorMsg = 'An error occurred during registration';
+        let errorMsg = ['An error occurred during registration'];
 
-        if (error.response && error.response.data.errors) {
-          errorMsg = error.response.data.errors.map(err => err.msg).join(', ');
+        if (error.response && error.response.data.error) {
+          errorMsg = error.response.data.error;
         }
 
-        setError(errorMsg);
+        setErrors(errorMsg);
       });
   };
 
@@ -64,7 +68,13 @@ function Register() {
       </div>
       <button onClick={register}>Register</button>
       <button onClick={exit}>Exit</button>
-      {error && <p>{error}</p>}
+      {errors.length > 0 && (
+        <div>
+          {errors.map((error, index) => (
+            <p key={index}>{error}</p>
+          ))}
+        </div>
+      )}
     </div>
   );
 }

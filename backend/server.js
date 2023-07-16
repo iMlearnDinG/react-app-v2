@@ -6,6 +6,7 @@ const mongoose = require('mongoose');
 const apiRoutes = require('../backend/api');
 const { initSocket } = require('../backend/socket');
 const MongoStore = require('connect-mongo');
+const path = require('path'); // Add this line
 require('dotenv').config({ path: "C:\\Users\\User\\PycharmProjects\\react-app-v2\\.env" });
 
 const bunyan = require('bunyan');
@@ -24,23 +25,25 @@ const serverPort = process.env.SERVER_PORT;
 const mongoDBURL = process.env.MONGODB_URL;
 
 const corsOptions = {
-  origin: process.env.CORS_ORIGIN, // Allow requests from the specified origin
-  methods: ['GET', 'POST', 'PUT', 'DELETE'], // Allow specified HTTP methods
-  allowedHeaders: ['Content-Type', 'Authorization'], // Allow specified headers
-  credentials: true // Allow sending cookies in CORS requests
+  origin: process.env.CORS_ORIGIN,
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: true
 };
 
-// Set up middleware
 app.use(cors(corsOptions));
 app.use(express.json());
+
+
+
 app.use(
   session({
     secret: process.env.SECRET_KEY,
     resave: false,
     saveUninitialized: true,
-    store: MongoStore.create({ mongoUrl: mongoDBURL }), // Use MongoDB to store session data
+    store: MongoStore.create({ mongoUrl: mongoDBURL }),
     cookie: {
-      maxAge: 5 * 60 * 1000, // 5 minutes
+      maxAge: 5 * 60 * 1000,
     },
   })
 );
@@ -48,7 +51,6 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 
-// Connect to MongoDB
 mongoose.connect(mongoDBURL, {
   useNewUrlParser: true,
   useUnifiedTopology: true
@@ -59,31 +61,34 @@ db.once('open', () => {
   log.info('Connected to MongoDB');
 });
 
-// Mount API routes
-app.use('/api', apiRoutes); // Mount the API routes under the '/api' prefix
+// Your API routes
+app.use('/api', apiRoutes);
 
-// Add /api/auth route
-app.get('/api/auth', (req, res) => {
-  if (req.isAuthenticated()) {
-    res.json({ isAuthenticated: true });
-  } else {
-    res.json({ isAuthenticated: false });
+
+
+// The "catchall" handler: for any request that doesn't
+// match one above, send back React's index.html file.
+/*app.get('*', (req, res, next) => {
+  // If the request URL starts with '/api', skip this route handler
+  // and move on to the next one (if there is one)
+  if (req.url.startsWith('/api')) {
+    return next();
   }
-});
 
-// Error handling middleware
+  res.sendFile(path.resolve( 'build', 'index.html'));
+});*/
+
+
 app.use((err, req, res, next) => {
   log.error(err);
-  res.status(500).json({ error: 'Internal Server Error' });
+  res.status(500).json({ success: false, data: null, error: 'Internal Server Error' });
 });
 
-// Serve static files (optional)
-app.use(express.static('public'));
-
-// Start the server
 const server = app.listen(serverPort, () => {
   log.info(`Server running on port ${serverPort}`);
 });
 
-// Initialize socket.io
+// Serve static files from the React app
+app.use(express.static('build'))
+
 initSocket(server);

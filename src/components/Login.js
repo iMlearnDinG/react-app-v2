@@ -6,37 +6,33 @@ function Login() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [error, setError] = useState(null); // Add state for error messages
+  const [error, setError] = useState(null);
 
-  const handleSubmit = async (e) => { // Update to be an async function
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
     setError(null);
 
-    // Make a POST request to the server with the user's input
-    const response = await fetch('/api/login', {
+    const response = await fetch('/api/auth', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ username, password }),
       credentials: 'include',
     });
-    console.log(response);
 
 
-    const data = await response.json(); // Parse the JSON response
-
-    if (response.ok) {
-      // Login was successful, navigate to the menu page
-      navigate('/menu');
-    } else {
-      // Login failed, display the error message
-      setError(data.error);
-    }
+    const data = await response.json();
 
     setIsSubmitting(false);
+
+    if (data.success) {
+      navigate('/menu');
+    } else {
+      setError(data.error);
+    }
   };
 
-  const handleInputChange = (e) => {
+  const handleInputChange = async (e) => {
     const { name, value } = e.target;
     if (name === 'username') {
       setUsername(value);
@@ -47,14 +43,14 @@ function Login() {
 
   const isFormValid = username !== '' && password !== '';
 
-  const handleRegisterClick = () => {
+  const handleRegisterClick = async () => {
     navigate('/register');
   };
 
   return (
     <div>
       <h1>Login</h1>
-      {error && <p>{error}</p>} {/* Display the error message if there is one */}
+      {error && <p>{error}</p>}
       <form onSubmit={handleSubmit}>
         <div>
           <label htmlFor="username">Username:</label>

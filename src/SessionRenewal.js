@@ -8,21 +8,26 @@ function SessionRenewal(WrappedComponent) {
       let timeoutId;
 
       const renewSession = () => {
-        // Send a request to the server to renew the session
         fetch('/api/renew-session', {
           method: 'POST',
           credentials: 'include', // Include cookies in the request
+        })
+        .then(res => res.json())
+        .then((data) => {
+          if (!data.success) {
+            console.error('Session renewal failed:', data.error);
+          }
+        })
+        .catch((error) => {
+          console.error('Error:', error);
         });
       };
 
       const resetTimeout = () => {
         console.log('User activity detected');
-        // Clear the existing timeout
         if (timeoutId) {
           clearTimeout(timeoutId);
         }
-
-        // Set a new timeout
         timeoutId = setTimeout(renewSession, 5 * 60 * 1000); // 5 minutes
       };
 
@@ -30,25 +35,23 @@ function SessionRenewal(WrappedComponent) {
         activityDetected.current = true;
       };
 
-      // Add event listeners for mouse and keyboard events
       window.addEventListener('mousemove', activityHandler);
       window.addEventListener('keydown', activityHandler);
-      window.addEventListener('click', activityHandler); // Add a listener for mouse clicks
-      window.addEventListener('input', activityHandler); // Add a listener for form inputs
+      window.addEventListener('click', activityHandler);
+      window.addEventListener('input', activityHandler);
 
       const intervalId = setInterval(() => {
         if (activityDetected.current) {
           resetTimeout();
           activityDetected.current = false;
         }
-      }, 10000); // Check for activity every second
+      }, 10000);
 
-      // Remove the event listeners and clear the timeout when the component is unmounted
       return () => {
         window.removeEventListener('mousemove', activityHandler);
         window.removeEventListener('keydown', activityHandler);
-        window.removeEventListener('click', activityHandler); // Remove the listener for mouse clicks
-        window.removeEventListener('input', activityHandler); // Remove the listener for form inputs
+        window.removeEventListener('click', activityHandler);
+        window.removeEventListener('input', activityHandler);
         clearTimeout(timeoutId);
         clearInterval(intervalId);
       };
