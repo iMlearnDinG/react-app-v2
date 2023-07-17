@@ -13,24 +13,22 @@ function Login() {
     setIsSubmitting(true);
     setError(null);
 
-    const response = await fetch('/api/auth', {
+    const response = await fetch('/api/login', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ username, password }),
       credentials: 'include',
     });
 
-
     const data = await response.json();
-
     setIsSubmitting(false);
-
     if (data.success) {
       navigate('/menu');
     } else {
       setError(data.error);
     }
   };
+
 
   const handleInputChange = async (e) => {
     const { name, value } = e.target;

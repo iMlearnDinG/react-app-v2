@@ -27,9 +27,9 @@ passport.serializeUser((user, done) => {
 passport.deserializeUser(async (id, done) => {
   try {
     const user = await User.findById(id);
-    done(null, user, { success: true, data: { user }, error: null });
+    done(null, user);
   } catch (err) {
-    done(err, false, { success: false, data: null, error: 'Internal Server Error' });
+    done(err);
   }
 });
 

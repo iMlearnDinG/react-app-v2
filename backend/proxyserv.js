@@ -41,7 +41,16 @@ app.all('*', (req, res) => {
 proxyScript.on('error', (err, req, res) => {
   log.error({ err }, 'Proxy Error');
   if (!res.headersSent) {
-    res.status(500).send('Proxy Error');
+    res.status(500).json({
+      error: 'Proxy Error',
+      details: {
+        errno: err.errno,
+        code: err.code,
+        syscall: err.syscall,
+        address: err.address,
+        port: err.port,
+      }
+    });
   }
 });
 

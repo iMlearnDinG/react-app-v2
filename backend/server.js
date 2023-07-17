@@ -40,13 +40,14 @@ app.use(
   session({
     secret: process.env.SECRET_KEY,
     resave: false,
-    saveUninitialized: true,
+    saveUninitialized: false,
     store: MongoStore.create({ mongoUrl: mongoDBURL }),
     cookie: {
       maxAge: 5 * 60 * 1000,
     },
   })
 );
+
 
 app.use(passport.initialize());
 app.use(passport.session());
@@ -88,7 +89,7 @@ const server = app.listen(serverPort, () => {
   log.info(`Server running on port ${serverPort}`);
 });
 
-// Serve static files from the React app
-app.use(express.static('build'))
+/*// Serve static files from the React app
+app.use(express.static('build'))*/
 
 initSocket(server);

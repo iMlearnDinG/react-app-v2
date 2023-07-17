@@ -75,16 +75,22 @@ router.post(
 );
 
 router.post('/logout', (req, res) => {
-  req.logout();
-  req.session.destroy((err) => {
-    if (err) {
-      log.error(err);
-      return res.status(500).json({ success: false, data: null, error: 'Internal Server Error' });
-    }
+  if (req.session) {
+    req.logout();
+    req.session.destroy((err) => {
+      if (err) {
+        log.error(err);
+        return res.status(500).json({ success: false, data: null, error: 'Internal Server Error' });
+      }
 
-    res.json({ success: true, data: { message: 'Logged out' }, error: null });
-  });
+      res.json({ success: true, data: { message: 'Logged out' }, error: null });
+    });
+  } else {
+    res.status(400).json({ success: false, data: null, error: 'Not authenticated' });
+  }
 });
+
+
 
 router.post('/renew-session', (req, res) => {
   if (req.session) {
@@ -97,7 +103,6 @@ router.post('/renew-session', (req, res) => {
 
 router.get('/auth', (req, res) => {
   console.log('Auth route hit'); // Add this line
-  res.set('Cache-Control', 'no-store');
 
   if (req.user) {
     return res.json({ success: true, data: { isAuthenticated: true, user: req.user }, error: null });
@@ -105,6 +110,7 @@ router.get('/auth', (req, res) => {
     return res.json({ success: false, data: { isAuthenticated: false }, error: null });
   }
 });
+
 
 
 router.get('/user', checkAuthenticated, (req, res) => {
@@ -119,12 +125,5 @@ router.post('/message', checkAuthenticated, (req, res) => {
 
   res.json({ success: true, data: { message: 'Message sent' }, error: null });
 });
-
-router.post('/auth', passport.authenticate('local'), (req, res) => {
-  // If this function gets called, authentication was successful.
-  // `req.user` contains the authenticated user.
-  res.json({ success: true, data: req.user, error: 'Authenication Successful' });
-});
-
 
 module.exports = router;
