@@ -65,21 +65,6 @@ db.once('open', () => {
 // Your API routes
 app.use('/api', apiRoutes);
 
-
-
-// The "catchall" handler: for any request that doesn't
-// match one above, send back React's index.html file.
-/*app.get('*', (req, res, next) => {
-  // If the request URL starts with '/api', skip this route handler
-  // and move on to the next one (if there is one)
-  if (req.url.startsWith('/api')) {
-    return next();
-  }
-
-  res.sendFile(path.resolve( 'build', 'index.html'));
-});*/
-
-
 app.use((err, req, res, next) => {
   log.error(err);
   res.status(500).json({ success: false, data: null, error: 'Internal Server Error' });
@@ -89,7 +74,7 @@ const server = app.listen(serverPort, () => {
   log.info(`Server running on port ${serverPort}`);
 });
 
-/*// Serve static files from the React app
-app.use(express.static('build'))*/
+// Serve static files from the React app
+app.use(express.static('build'))
 
 initSocket(server);

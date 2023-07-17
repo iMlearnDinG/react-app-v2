@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext } from 'react';
 import { BrowserRouter as Router, Routes, Route, useNavigate } from 'react-router-dom';
 import { AuthProvider, AuthContext } from './AuthContext';
 import Login from './components/Login';
@@ -12,21 +12,14 @@ function PrivateRoute({ children }) {
   const { user, loading } = useContext(AuthContext);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    if (!loading && !user) {
-      navigate('/login', { replace: true });
-    }
-  }, [loading, user, navigate]);
-
   if (loading) {
     return <div>Loading...</div>;
-  }
-
-  if (!user) {
+  } else if (!user) {
+    navigate('/login', { replace: true });
     return null;
+  } else {
+    return children;
   }
-
-  return children;
 }
 
 function App() {

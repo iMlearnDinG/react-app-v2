@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext } from 'react';
 import { BrowserRouter as Router, Routes, Route, useNavigate } from 'react-router-dom';
 import { AuthProvider, AuthContext } from './AuthContext';
 import Login from './components/Login';
@@ -6,27 +6,19 @@ import Register from './components/Register';
 import Lobby from './components/Lobby';
 import Game from './components/Game';
 import Menu from './components/Menu';
-import SessionRenewal from './SessionRenewal';
 
 function PrivateRoute({ children }) {
   const { user, loading } = useContext(AuthContext);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    if (!loading && !user) {
-      navigate('/login', { replace: true });
-    }
-  }, [loading, user, navigate]);
-
   if (loading) {
     return <div>Loading...</div>;
-  }
-
-  if (!user) {
+  } else if (!user) {
+    navigate('/login', { replace: true });
     return null;
+  } else {
+    return children;
   }
-
-  return children;
 }
 
 function App() {
@@ -48,4 +40,4 @@ function App() {
   );
 }
 
-export default SessionRenewal(App);
+export default App;

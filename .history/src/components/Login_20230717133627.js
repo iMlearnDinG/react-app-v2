@@ -1,10 +1,8 @@
-import React, { useState, useContext } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { AuthContext } from '../AuthContext';
 
 function Login() {
   const navigate = useNavigate();
-  const { user, setUser } = useContext(AuthContext);
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -25,7 +23,6 @@ function Login() {
     const data = await response.json();
     setIsSubmitting(false);
     if (data.success) {
-      setUser(data.data.user);
       navigate('/menu');
     } else {
       setError(data.error);

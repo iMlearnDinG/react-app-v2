@@ -76,31 +76,24 @@ router.post(
 
 router.post('/logout', (req, res) => {
   if (req.session) {
-    req.logout((err) => {
+    req.logout();
+    req.session.destroy((err) => {
       if (err) {
         log.error(err);
         // include error message in response
-        return res.status(500).json({ success: false, data: null, error: `Logout Error: ${err.message}` });
+        return res.status(500).json({ success: false, data: null, error: `Internal Server Error: ${err.message}` });
       }
 
-      req.session.destroy((err) => {
-        if (err) {
-          log.error(err);
-          // include error message in response
-          return res.status(500).json({ success: false, data: null, error: `Session Destruction Error: ${err.message}` });
-        }
+      // Clear the cookie
+      res.clearCookie('connect.sid');
 
-        // Clear the cookie
-        res.clearCookie('connect.sid');
-        res.json({ success: true, data: { message: 'Logged out' }, error: null });
-      });
+      res.json({ success: true, data: { message: 'Logged out' }, error: null });
     });
   } else {
     log.error('No session found');
     res.status(400).json({ success: false, data: null, error: 'Not authenticated' });
   }
 });
-
 
 router.post('/renew-session', (req, res) => {
   if (req.session) {
