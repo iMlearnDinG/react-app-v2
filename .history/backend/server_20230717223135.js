@@ -83,6 +83,7 @@ app.use(
     saveUninitialized: false,
     store: MongoStore.create({ mongoUrl: mongoDBURL }),
     cookie: {
+      secure: true, // Ensures the browser only sends the cookie over HTTPS.
       httpOnly: true, // Ensures the cookie is sent only over HTTP(S), not client JavaScript, helping to protect against cross-site scripting attacks.
       sameSite: 'strict', // Protection against cross-site request forgery attacks
       maxAge: 5 * 60 * 1000,
@@ -117,13 +118,7 @@ const server = app.listen(serverPort, () => {
   log.info(`Server running on port ${serverPort}`);
 });
 
-app.use((req, res, next) => {
-  console.log(`Received request: ${req.method} ${req.path}`);
-  next();
-});
-
-
-// Serve static files from the React app
-app.use(express.static('build'))
+// // Serve static files from the React app
+// app.use(express.static('build'))
 
 initSocket(server);

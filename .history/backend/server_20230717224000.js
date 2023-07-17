@@ -123,7 +123,7 @@ app.use((req, res, next) => {
 });
 
 
-// Serve static files from the React app
-app.use(express.static('build'))
+// // Serve static files from the React app
+// app.use(express.static('build'))
 
 initSocket(server);

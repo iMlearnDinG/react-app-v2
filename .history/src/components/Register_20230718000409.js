@@ -25,7 +25,7 @@ function Register() {
         if (res.data.success) {
           navigate('/login', { replace: true });
         } else {
-          setErrors(res.data.error);
+          setErrors([res.data.error]);
         }
       })
 

@@ -25,7 +25,7 @@ const log = bunyan.createLogger({
 
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 100, // limit each IP to 100 requests per windowMs
+  max: 3, // limit each IP to 100 requests per windowMs
   handler: (req, res, next) => {
     // if we hit the rate limit, print a message and remove the session cookie
     console.log(`Rate limit exceeded by user: ${util.inspect(req.sessionID)}`);
@@ -123,7 +123,7 @@ app.use((req, res, next) => {
 });
 
 
-// Serve static files from the React app
-app.use(express.static('build'))
+// // Serve static files from the React app
+// app.use(express.static('build'))
 
 initSocket(server);

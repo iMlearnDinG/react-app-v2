@@ -20,7 +20,7 @@ function Register() {
     };
 
     axios
-      .post(`${process.env.REACT_APP_API_BASE_URL}/register`, userData)
+      .post('/api/register', userData)
       .then((res) => {
         if (res.data.success) {
           navigate('/login', { replace: true });
@@ -28,7 +28,6 @@ function Register() {
           setErrors(res.data.error);
         }
       })
-
       .catch((error) => {
         console.log(error);
         let errorMsg = ['An error occurred during registration'];

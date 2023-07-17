@@ -87,7 +87,6 @@ app.use(
       sameSite: 'strict', // Protection against cross-site request forgery attacks
       maxAge: 5 * 60 * 1000,
     },
-    rolling: true, // session expiration is reset on each response
   })
 );
 
@@ -123,7 +122,7 @@ app.use((req, res, next) => {
 });
 
 
-// Serve static files from the React app
-app.use(express.static('build'))
+// // Serve static files from the React app
+// app.use(express.static('build'))
 
 initSocket(server);

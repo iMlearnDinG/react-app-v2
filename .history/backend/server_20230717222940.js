@@ -28,18 +28,18 @@ const limiter = rateLimit({
   max: 100, // limit each IP to 100 requests per windowMs
   handler: (req, res, next) => {
     // if we hit the rate limit, print a message and remove the session cookie
-    console.log(`Rate limit exceeded by user: ${util.inspect(req.sessionID)}`);
+    log.info(`Rate limit exceeded by user: ${util.inspect(req.sessionID)}`);
     if (req.session) {
       req.session.destroy((err) => {
         if (err) {
-          console.error('Error destroying session:', err);
+          log.error('Error destroying session:', err);
           res.status(500).json({
             success: false,
             error: 'Error destroying session',
             details: err.message
           });
         } else {
-          console.log('Session destroyed due to rate limiting');
+          log.info('Session destroyed due to rate limiting');
           res.clearCookie('connect.sid');
           res.status(429).json({
             success: false,
@@ -83,6 +83,7 @@ app.use(
     saveUninitialized: false,
     store: MongoStore.create({ mongoUrl: mongoDBURL }),
     cookie: {
+      secure: true, // Ensures the browser only sends the cookie over HTTPS.
       httpOnly: true, // Ensures the cookie is sent only over HTTP(S), not client JavaScript, helping to protect against cross-site scripting attacks.
       sameSite: 'strict', // Protection against cross-site request forgery attacks
       maxAge: 5 * 60 * 1000,
@@ -117,13 +118,7 @@ const server = app.listen(serverPort, () => {
   log.info(`Server running on port ${serverPort}`);
 });
 
-app.use((req, res, next) => {
-  console.log(`Received request: ${req.method} ${req.path}`);
-  next();
-});
-
-
-// Serve static files from the React app
-app.use(express.static('build'))
+// // Serve static files from the React app
+// app.use(express.static('build'))
 
 initSocket(server);
