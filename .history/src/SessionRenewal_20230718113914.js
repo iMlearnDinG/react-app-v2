@@ -45,7 +45,7 @@ function SessionRenewal(WrappedComponent) {
           resetTimeout();
           activityDetected.current = false;
         }
-      }, 225000);
+      }, 100000);
 
       return () => {
         window.removeEventListener('mousemove', activityHandler);

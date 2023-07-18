@@ -10,33 +10,14 @@ const jwt = require('jsonwebtoken');
 const bunyan = require('bunyan');
 const log = bunyan.createLogger({name: 'myapp'});
 
+// Middleware to check if a user is authenticated
 function checkAuthenticated(req, res, next) {
-  // check header or url parameters or post parameters for token
-  const token = req.body.token || req.query.token || req.headers['authorization'];
-
-  // decode token
-  if (token) {
-    // verifies secret and checks exp
-    jwt.verify(token, process.env.JWT_SECRET, function(err, decoded) {      
-      if (err) {
-        return res.json({ success: false, message: 'Failed to authenticate token.' });    
-      } else {
-        // if everything is good, save to request for use in other routes
-        req.decoded = decoded;    
-        next();
-      }
-    });
-
-  } else {
-    // if there is no token
-    // return an error
-    return res.status(403).send({ 
-        success: false, 
-        message: 'No token provided.' 
-    });
+  if (req.isAuthenticated()) {
+    return next();
   }
-}
 
+  res.status(401).json({ success: false, data: null, error: 'Not authenticated' });
+}
 
 router.post(
   '/login',
@@ -153,7 +134,6 @@ router.get('/auth', (req, res) => {
 router.get('/user', checkAuthenticated, (req, res) => {
   res.json({ success: true, data: req.user, error: null });
 });
-
 
 router.post('/message', checkAuthenticated, (req, res) => {
   const { roomId, message } = req.body;

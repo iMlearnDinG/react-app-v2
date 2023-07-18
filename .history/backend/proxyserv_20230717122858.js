@@ -23,7 +23,7 @@ const backendUrl = `http://localhost:${backendPort}`;
 
 // Frontend server configuration
 const frontendPort = 3000;
-const frontendUrl = `${process.env.CORS_ORIGIN}:${frontendPort}`;
+const frontendUrl = `http://localhost:${frontendPort}`;
 
 // Proxy API requests to the backend server
 app.all('/api/*', (req, res) => {

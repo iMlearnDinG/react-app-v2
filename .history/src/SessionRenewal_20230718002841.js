@@ -28,7 +28,7 @@ function SessionRenewal(WrappedComponent) {
         if (timeoutId) {
           clearTimeout(timeoutId);
         }
-        timeoutId = setTimeout(renewSession, 1); // 5 minutes
+        timeoutId = setTimeout(renewSession, 5 * 60 * 25); // 5 minutes
       };
 
       const activityHandler = () => {
@@ -45,7 +45,7 @@ function SessionRenewal(WrappedComponent) {
           resetTimeout();
           activityDetected.current = false;
         }
-      }, 225000);
+      }, 10000);
 
       return () => {
         window.removeEventListener('mousemove', activityHandler);
