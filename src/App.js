@@ -7,6 +7,9 @@ import Lobby from './components/Lobby';
 import Game from './components/Game';
 import Menu from './components/Menu';
 import SessionRenewal from './SessionRenewal';
+import WaitingRoom from './components/waitingRoom';
+import { LobbyProvider } from './config/LobbyContext'; 
+
 
 function PrivateRoute({ children }) {
   const { user, loading } = useContext(AuthContext);
@@ -34,18 +37,22 @@ function App() {
     <Router>
       <div className="App">
         <AuthProvider>
-          <Routes>
-            <Route path="/" element={<Login />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Register />} />
-            <Route path="/lobby" element={<PrivateRoute><Lobby /></PrivateRoute>} />
-            <Route path="/game" element={<PrivateRoute><Game /></PrivateRoute>} />
-            <Route path="/menu" element={<PrivateRoute><Menu /></PrivateRoute>} />
-          </Routes>
+          <LobbyProvider> 
+            <Routes>
+              <Route path="/" element={<Login />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/register" element={<Register />} />
+              <Route path="/lobby" element={<PrivateRoute><Lobby /></PrivateRoute>} />
+              <Route path="/game" element={<PrivateRoute><Game /></PrivateRoute>} />
+              <Route path="/menu" element={<PrivateRoute><Menu /></PrivateRoute>} />
+              <Route path="/waiting-room" element={<PrivateRoute><WaitingRoom /></PrivateRoute>} /> {/* Add this line */}
+            </Routes>
+          </LobbyProvider> 
         </AuthProvider>
       </div>
     </Router>
   );
 }
+
 
 export default SessionRenewal(App);

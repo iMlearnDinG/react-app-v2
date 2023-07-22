@@ -10,10 +10,10 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  inQueue: {
-    type: Boolean,
-    default: false,
-  },  
+  lobbyId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Lobby'
+  },
 }, {
   toJSON: {
     transform: function (doc, ret) {

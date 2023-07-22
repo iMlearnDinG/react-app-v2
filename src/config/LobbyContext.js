@@ -15,7 +15,7 @@ export function LobbyProvider({ children }) {
   useEffect(() => {
     // Fetch the current lobby from the server and update state
     const fetchLobby = async () => {
-      const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/lobby`, {
+      const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/multiplayer`, {
         credentials: 'include',
       });
       const data = await response.json();

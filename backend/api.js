@@ -4,6 +4,7 @@ const { getIO } = require('../backend/socket');
 const { body, validationResult } = require('express-validator');
 const bcrypt = require('bcrypt');
 const User = require('../backend/models/User');
+const Lobby = require('../backend/models/Lobby');
 const router = express.Router();
 const jwt = require('jsonwebtoken');
 
@@ -101,6 +102,21 @@ router.post(
   }
 );
 
+// Multiplayer route POST
+router.post('/multiplayer', async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id);
+    const lobby = new Lobby({ players: [user] });
+    await lobby.save();
+    user.lobbyId = lobby._id;
+    user.inQueue = true;
+    await user.save();
+    res.json({ success: true, lobby });
+  } catch (error) {
+    res.json({ success: false, error: error.message });
+  }
+});
+
 router.post('/logout', (req, res) => {
   if (req.session) {
     req.logout((err) => {
@@ -147,6 +163,18 @@ router.get('/auth', (req, res) => {
     return res.json({ success: false, data: { isAuthenticated: false }, error: null });
   }
 });
+
+// Multiplayer route GET
+router.get('/multiplayer', async (req, res) => {
+  try {
+    // Your logic for GET request. For example:
+    const multiplayerLobbies = await Lobby.find();
+    res.json({ success: true, data: multiplayerLobbies });
+  } catch (error) {
+    res.json({ success: false, error: error.message });
+  }
+});
+
 
 
 
