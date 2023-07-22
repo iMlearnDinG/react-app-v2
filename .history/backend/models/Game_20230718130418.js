@@ -1,0 +1,1 @@
+// Game.js: This model will represent a game instance. It will include fields like gameId, player1, player2, dealer, deck, discardPile, currentTurn, winner, gameStatus (ongoing, ended), and score.

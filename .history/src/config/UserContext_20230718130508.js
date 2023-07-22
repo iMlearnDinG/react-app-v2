@@ -1,0 +1,1 @@
+// UserContext.js: This context will hold the state of the current user. It will include the user's information and functions to handle user actions like logging in, logging out, and updating user information.

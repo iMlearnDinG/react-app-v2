@@ -1,0 +1,1 @@
+// GameContext.js: This context will hold the state of the current game for a player. It will include the game state, the player's hand, the current turn, and functions to handle game actions like drawing a card, discarding a card, and ending a turn.

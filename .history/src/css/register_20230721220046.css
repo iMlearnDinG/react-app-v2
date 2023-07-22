@@ -1,0 +1,53 @@
+.register-container {
+    background-color: rgba(12, 12, 21, 0.597);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: calc(10px + 2vmin);
+    color: rgba(255, 255, 255, 0.209);
+    overflow: hidden;
+}
+
+.register-heading {
+    position: relative;
+    font-size: 6vh;
+    font-weight: lighter;
+    font-family: "Lucida Calligraphy";
+    font-style: italic;
+    color: #fff;
+    margin: 1vh;
+}
+
+.register-image {
+    width: 12vh;
+    object-fit: contain;
+    margin-top: -2vh;
+    transition: transform 3s ease, opacity 0s ease;
+    perspective: 1000px;
+    transform-style: preserve-3d;
+    transform: rotateX(180deg) rotateY(0deg) rotateZ(0deg);
+}
+
+.register-image:hover {
+    transform: rotateX(-10deg) rotateY(10deg);
+}
+
+.register-image.animate {
+    transform: rotateX(-10deg) rotateY(10deg);
+    transition: transform 0.5s ease;
+}
+
+.register-image1, .register-image2 {
+    width: 60vh;
+    object-fit: contain;
+}
+  
+.register-image1 {
+    max-width: 425px;
+    max-height: 150px;
+    margin-top: 1vh;
+    margin-bottom: 2vh;
+}
+  

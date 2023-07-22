@@ -1,0 +1,248 @@
+
+.login-header {
+    background-color: rgba(12, 12, 21, 0.597);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: calc(10px + 2vmin);
+    color: rgba(255, 255, 255, 0.209);
+    overflow: hidden;
+}
+
+
+.login-image0 {
+    width: 35vh;
+    margin-bottom: 1vh;
+    opacity: 1;
+    animation: rotateBack 14s;
+    animation-fill-mode: forwards;
+    transform-style: preserve-3d;
+    transform: rotateX(360deg) rotateY(360deg) rotateZ(360deg);
+    transition-duration: 3s;
+    filter: blur(0);
+    margin-top: 2vh;
+    overflow: hidden;
+}
+
+.login-image0.fade-in {
+    opacity: 1;
+}
+
+.login-image0:hover {
+    filter: blur(10px);
+}
+
+.login-image0:hover::before {
+    opacity: 1;
+}
+
+.login-image0::before {
+    content: '';
+    position: relative;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.2);
+    pointer-events: none;
+    transition-duration: 5s;
+    opacity: 0;
+}
+
+@keyframes rotateBack {
+    0% {
+        opacity: 0;
+        transform: rotateX(180deg) rotateY(0deg) rotateZ(360deg) scale(0.1);
+        perspective: 25px;
+        filter: blur(25px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg) scale(1);
+        perspective: 0px;
+    }
+}
+
+.login-image1 {
+    width: 35vh;
+    max-width: 500px;
+    transform: scaleY(-1);
+    margin-top: -0.5vh;
+    margin-bottom: -3vh;
+  }
+
+#background-video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    object-fit: cover;
+    overflow: hidden;
+}
+
+
+h1.glow-text {
+    margin: 0.2vw;
+    font-family: 'Benne', serif;
+    color: oldlace;
+    text-shadow: 0 0 1px #FFD700, 0 0 9px #FFD700, 0 12 9px #FFD700, 0 0 12px #FFD700;
+    animation: glow 8s alternate infinite, fadeIn 2s ease-out;
+    animation-delay: 10s, 11s;
+    animation-iteration-count: infinite, 1;
+    animation-fill-mode: none, forwards;
+    opacity: 0;
+    font-size: 7vh;
+    font-weight: bold;
+    margin-top: 2vh;
+}
+
+@keyframes glow {
+    0% {
+        text-shadow: 0 0 0px navajowhite, 0 0 6px #FFD700, 0 0 9px #FFD700, 0 0 12px darkgoldenrod;
+    }
+
+    50% {
+        text-shadow: 0 0 6px darkgoldenrod, 0 0 15px goldenrod, 0 0 6px darkgoldenrod, 0 0 6px #FFD700, 0 0 25px #FFD700;
+    }
+
+    100% {
+        text-shadow: 0 0 0px darkgoldenrod, 0 0 6px darkgoldenrod, 0 0 9px goldenrod, 0 0 12px navajowhite;
+    }
+}
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+h2.glow-text {
+    margin: 0.2vw;
+    font-family: 'Benne', serif;
+    font-weight: bold;
+    color: oldlace;
+    text-shadow: 0 0 1px #FFD700, 0 0 9px #FFD700, 0 12 9px #FFD700, 0 0 12px #FFD700;
+    animation: glow 8s alternate infinite, fadeIn 2s ease-out;
+    animation-delay: 11s, 12s;
+    animation-iteration-count: infinite, 1;
+    animation-fill-mode: none, forwards;
+    opacity: 0;
+    font-size: 5vh;
+}
+
+@keyframes glow {
+    0% {
+        text-shadow: 0 0 0px navajowhite, 0 0 6px #FFD700, 0 0 9px #FFD700, 0 0 12px darkgoldenrod;
+    }
+
+    50% {
+        text-shadow: 0 0 6px darkgoldenrod, 0 0 15px goldenrod, 0 0 6px darkgoldenrod, 0 0 6px #FFD700, 0 0 25px #FFD700;
+    }
+
+    100% {
+        text-shadow: 0 0 0px darkgoldenrod, 0 0 6px darkgoldenrod, 0 0 9px goldenrod, 0 0 12px navajowhite;
+    }
+}
+
+
+.login-input-group {
+    display: inline-flex;
+    position: relative;
+    flex-direction: row;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  .login-input {
+    color: whitesmoke;
+    text-align: center;
+    padding: 0.5vw;
+    border: 2px ridge goldenrod;
+    border-radius: 5px;
+    background-color: #33373a;
+    margin: 0.5vw;
+    width: 38vw;
+    max-width: 195px;
+  }
+  
+  
+  .login-input::placeholder {
+    color: navajowhite;
+    text-align: center;
+    opacity: 50;
+    font-size: 0.8rem;
+    font-style: italic;
+  }
+  
+
+  .login-button {
+    display: inline-flex;
+    justify-content: center;
+    border-radius: 6px;
+    padding: 0.5vw;
+    border: none;
+    color: goldenrod;
+    background-color: #282c34;
+    cursor: pointer;
+    font-size: 75%;
+    font-family: "Script MT Bold";
+    margin-bottom: 1vh;
+    margin-top: 2vh;
+    transition-duration: 0.85s;
+    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.5);
+    width: 30vh;
+    max-width: 275px;
+  }
+  
+  .login-button:hover {
+    background-color: goldenrod;
+    justify-content: center;
+    color: black;
+  }
+
+  .signup-section p {
+    text-align: center;
+    font-size: 75%;
+    color: #33;
+    font-family: "High Tower Text";
+    font-weight: normal;
+    font-style: italic;
+    margin-bottom: 2vh;
+  }
+
+  .register-button {
+    display: inline-flex;
+    position: fixed;
+    justify-content: center;
+    padding: 1.8rem;
+    border: 2px solid transparent;
+    border-image: linear-gradient(to right, transparent, goldenrod, transparent) 1 100%;
+    border-image-slice: 1;
+    font-style: italic;
+    border-radius: 4px;
+    color: goldenrod;
+    background-color: #282c34;
+    cursor: pointer;
+    font-size: 100%;
+    font-family: "Book Antiqua";
+    transition-duration: 0.85s;
+    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.5);
+    text-decoration: none;
+    width: 20%;
+    overflow: hidden;
+  }
+  
+  .register-button:hover {
+    background-color: goldenrod;
+    justify-content: center;
+    color: black;
+  }

@@ -1,0 +1,11 @@
+.register-container {
+    background-color: rgba(12, 12, 21, 0.597);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: calc(10px + 2vmin);
+    color: rgba(255, 255, 255, 0.209);
+    overflow: hidden;
+  }

@@ -1,0 +1,30 @@
+.register-container {
+    background-color: rgba(12, 12, 21, 0.597);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: calc(10px + 2vmin);
+    color: rgba(255, 255, 255, 0.209);
+    overflow: hidden;
+  }
+
+  .register-image {
+    width: 12vh;
+    object-fit: contain;
+    margin-top: -2vh;
+    transition: transform 3s ease, opacity 0s ease;
+    perspective: 1000px;
+    transform-style: preserve-3d;
+    transform: rotateX(180deg) rotateY(0deg) rotateZ(0deg);
+  }
+  
+  .register-image:hover {
+    transform: rotateX(-10deg) rotateY(10deg);
+  }
+  
+  .register-image.animate {
+    transform: rotateX(-10deg) rotateY(10deg);
+    transition: transform 0.5s ease;
+  }

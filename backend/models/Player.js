@@ -1,0 +1,1 @@
+// Player.js: This model will represent a player. It will include fields like userId, username, hand (array of Card objects), score, and status (ready, not ready).

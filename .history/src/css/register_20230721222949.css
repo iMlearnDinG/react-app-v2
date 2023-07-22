@@ -1,0 +1,143 @@
+.register-container {
+    background-color: rgba(12, 12, 21, 0.597);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: calc(10px + 2vmin);
+    color: rgba(255, 255, 255, 0.209);
+    overflow: hidden;
+}
+
+.register-heading {
+    position: relative;
+    font-size: 6vh;
+    font-weight: lighter;
+    font-family: "Lucida Calligraphy";
+    font-style: italic;
+    color: #fff;
+    margin: 1vh;
+}
+
+.register-image {
+    width: 12vh;
+    object-fit: contain;
+    margin-top: -2vh;
+    transition: transform 3s ease, opacity 0s ease;
+    perspective: 1000px;
+    transform-style: preserve-3d;
+    transform: rotateX(180deg) rotateY(0deg) rotateZ(0deg);
+}
+
+.register-image:hover {
+    transform: rotateX(-10deg) rotateY(10deg);
+}
+
+.register-image.animate {
+    transform: rotateX(-10deg) rotateY(10deg);
+    transition: transform 0.5s ease;
+}
+
+.register-image1, .register-image2 {
+    width: 60vh;
+    object-fit: contain;
+}
+  
+.register-image1 {
+    max-width: 425px;
+    max-height: 150px;
+    margin-bottom: 1%;
+}
+  
+.register-image2 {
+    max-width: 425px;
+    max-height: 200px;
+    margin-top: 1%;
+}
+
+.register-image3 {
+    display: inline-flex;
+    position: absolute;
+    z-index: -1;
+    opacity: 7%;
+    width: 70%;
+    max-width: 1300px;
+    animation: spin 200s linear infinite;
+    overflow: hidden;
+    background: linear-gradient(to top, transparent 80%, rgba(0, 0, 0, 0.1));
+  }
+  
+  @keyframes spin {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+.register-input {
+    padding: 5px;
+    border-width: 2px;
+    border: 3px ridge goldenrod;
+    border-radius: 4px;
+    font-size: 16px;
+    color: #FFFFFF;
+    font-style: italic;
+    width: 45vh;
+    max-width: 275px;
+    background-color: #33373a;
+    text-align: center;
+}
+
+.register-input:not(:last-child) {
+    margin-bottom: 10px;
+}
+
+.register-input::placeholder {
+    font-size: 85%;
+    text-align: center;
+}
+
+.register-input:focus {
+    border-color: goldenrod;
+    outline: none;
+    box-shadow: 0 0 5px rgba(97, 218, 251, 0.5);
+}
+
+.button-container {
+    display: flex;
+  }
+  
+  .register-button,
+  .exit-button {
+    display: inline-flex;
+    position: relative;
+    justify-content: center;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    color: goldenrod;
+    background-color: #282c34;
+    cursor: pointer;
+    font-family: "Book Antiqua";
+    font-size: 65%;
+    transition-duration: 0.85s;
+    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.5);
+    margin-right: 9px;
+    margin-top: 5vh;
+    width: 23vh;
+    max-width: 175px;
+  }
+  
+  
+  .register-button:hover, {
+    background-color: gold;
+    color: black;
+  }
+
+  .exit-button:hover {
+    background-color: red;
+    color: white;
+  }
