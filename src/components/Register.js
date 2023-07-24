@@ -99,7 +99,7 @@ function Register() {
       <img src={registerImage3} alt="Register" className="register-image3" />
       <div className="button-container">
         <button
-          className="register-button"
+          className="register-button1"
           onClick={register}
           onMouseEnter={() => setImageAnimated(true)}
           onMouseLeave={() => setImageAnimated(false)}

@@ -105,7 +105,7 @@
     display: flex;
   }
   
-  .register-button,
+  .register-button1,
   .exit-button {
     display: inline-flex;
     justify-content: center;
@@ -126,7 +126,7 @@
     max-width: 175px;
   }
   
-  .register-button:hover {
+  .register-button1:hover {
     background-color: gold;
     color: black;
   }

@@ -19,20 +19,10 @@ function initSocket(server) {
     socket.on('authenticate', (token) => {
       try {
         const decoded = jwt.verify(token, SECRET_KEY);
-        console.log('Authenticated:', decoded);
-
-        // Store the authenticated user or data in socket for later use
-        socket.auth = {
-          userId: decoded.id,
-          username: decoded.username,
-        };
-
-        // Emit authentication success event
         socket.emit('authenticated', { success: true, data: null, error: null });
       } catch (err) {
-        console.error('Authentication failed:', err);
-        // Emit authentication failure event
         socket.emit('authenticated', { success: false, data: null, error: 'Invalid token' });
+        socket.disconnect(); // Disconnect the socket if authentication fails
       }
     });
 

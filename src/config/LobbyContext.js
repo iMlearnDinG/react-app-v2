@@ -3,6 +3,7 @@
 // src/config/LobbyContext.js
 
 import React, { createContext, useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 export const LobbyContext = createContext();
 
@@ -11,6 +12,7 @@ export function LobbyProvider({ children }) {
   const [players, setPlayers] = useState([]);
   const [status, setStatus] = useState('waiting');
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
     // Fetch the current lobby from the server and update state
@@ -27,13 +29,39 @@ export function LobbyProvider({ children }) {
     fetchLobby();
   }, []);
 
-  const joinGame = (gameId) => {
-    // implement the joining game logic here
-  };
+const joinGame = async (gameId) => {
+  // implement the joining game logic here
+  const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/multiplayer`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ gameId }),
+    credentials: 'include',
+  });
+  const data = await response.json();
+  if (data.success) {
+    setLobby(data.data.lobby);
+    setPlayers(data.data.lobby.players);
+    setStatus(data.data.lobby.status);
+    // redirect to lobby page
+    navigate().push(`/lobby/${data.data.lobby._id}`);
+  } else {
+    console.error(data.error);
+  }
+};
 
-  const leaveGame = (gameId) => {
-    // implement the leaving game logic here
-  };
+const leaveGame = async (userId) => {
+  const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/leave-waiting-room`, {
+    method: 'POST',
+    body: JSON.stringify({ userId }),
+    headers: { 'Content-Type': 'application/json' },
+    credentials: 'include',
+  });
+  const data = await response.json();
+  if (!data.success) {
+    console.error(data.error);
+  }
+};
+
 
   const startGame = () => {
     // implement the starting game logic here

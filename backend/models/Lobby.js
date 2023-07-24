@@ -12,7 +12,7 @@ const lobbySchema = new mongoose.Schema({
     default: "waiting",
   },
   // other game-related fields
-});
+}, { timestamps: true });
 
 const Lobby = mongoose.model('Lobby', lobbySchema);
 

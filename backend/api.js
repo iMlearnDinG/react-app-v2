@@ -7,9 +7,11 @@ const User = require('../backend/models/User');
 const Lobby = require('../backend/models/Lobby');
 const router = express.Router();
 const jwt = require('jsonwebtoken');
+const { Types } = require('mongoose');
 
 const bunyan = require('bunyan');
 const log = bunyan.createLogger({name: 'myapp'});
+
 
 function checkAuthenticated(req, res, next) {
   // check header or url parameters or post parameters for token
@@ -39,6 +41,8 @@ function checkAuthenticated(req, res, next) {
 }
 
 
+// Login Route POST
+
 router.post(
   '/login',
   [
@@ -63,6 +67,9 @@ router.post(
     })(req, res, next);
   }
 );
+
+
+// Register Route POST
 
 router.post(
   '/register',
@@ -102,20 +109,46 @@ router.post(
   }
 );
 
+
 // Multiplayer route POST
+
 router.post('/multiplayer', async (req, res) => {
   try {
     const user = await User.findById(req.user.id);
-    const lobby = new Lobby({ players: [user] });
-    await lobby.save();
+
+    // Try to find an open lobby that has exactly 1 player
+    let openLobby = await Lobby.findOne({ players: { $size: 1 } });
+
+    if (!openLobby) {
+      // If no lobby with 1 player is found, try to find a lobby with no players
+      openLobby = await Lobby.findOne({ players: { $size: 0 } });
+    }
+
+    let lobby;
+    if (openLobby) {
+      // If there's an open lobby, add the current user to it
+      openLobby.players.push(user);
+      await openLobby.save();
+      lobby = openLobby;
+    } else {
+      // If there's no open lobby, create a new one
+      lobby = new Lobby({ players: [user] });
+      await lobby.save();
+    }
+
     user.lobbyId = lobby._id;
     user.inQueue = true;
     await user.save();
+
     res.json({ success: true, lobby });
   } catch (error) {
-    res.json({ success: false, error: error.message });
+    log.error('Error in /multiplayer route', error);
+    res.status(500).json({ success: false, error: 'An error occurred' });
   }
 });
+
+
+// Logout Route POST
 
 router.post('/logout', (req, res) => {
   if (req.session) {
@@ -145,6 +178,8 @@ router.post('/logout', (req, res) => {
 });
 
 
+// Renew Session Route POST
+
 router.post('/renew-session', (req, res) => {
   if (req.session) {
     req.session.cookie.maxAge = 5 * 60 * 1000; // 5 minutes
@@ -153,6 +188,41 @@ router.post('/renew-session', (req, res) => {
     res.status(401).json({ success: false, data: null, error: 'Not authenticated' });
   }
 });
+
+// Leave waiting room route POST
+router.post('/leave-waiting-room', async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id);
+
+    // Find the lobby that the user is a part of
+    let lobby = await Lobby.findById(user.lobbyId);
+    
+    if (lobby) {
+      // Remove the user from the players array
+      lobby.players = lobby.players.filter(player => player.toString() !== user._id.toString());
+      
+      // If after removal, the lobby has no players, delete the lobby
+      if (lobby.players.length === 0) {
+        await Lobby.findByIdAndRemove(lobby._id);
+      } else {
+        // Otherwise, save the lobby back to the database
+        await lobby.save();
+      }
+
+      user.lobbyId = null;
+      user.inQueue = false;
+      await user.save();
+    }
+
+    res.json({ success: true });
+  } catch (error) {
+    res.json({ success: false, error: error.message });
+  }
+});
+
+
+
+// Authentication Route GET
 
 router.get('/auth', (req, res) => {
   console.log('Auth route hit'); // Add this line
@@ -164,7 +234,9 @@ router.get('/auth', (req, res) => {
   }
 });
 
+
 // Multiplayer route GET
+
 router.get('/multiplayer', async (req, res) => {
   try {
     // Your logic for GET request. For example:
@@ -176,12 +248,14 @@ router.get('/multiplayer', async (req, res) => {
 });
 
 
-
+// User Model Route GET
 
 router.get('/user', checkAuthenticated, (req, res) => {
   res.json({ success: true, data: req.user, error: null });
 });
 
+
+// Message Route POST
 
 router.post('/message', checkAuthenticated, (req, res) => {
   const { roomId, message } = req.body;
@@ -191,5 +265,6 @@ router.post('/message', checkAuthenticated, (req, res) => {
 
   res.json({ success: true, data: { message: 'Message sent' }, error: null });
 });
+
 
 module.exports = router;

@@ -54,9 +54,24 @@ function Login() {
   };
 
   useEffect(() => {
+    const checkSession = async () => {
+      const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/check-session`, {
+        credentials: 'include', // This is important for sending the session cookie
+      });
+  
+      const data = await response.json();
+  
+      if (data.loggedIn) {
+        setUser(data.user);
+        navigate('/menu');
+      }
+    };
+  
+    checkSession();
+  
     const video = document.getElementById('background-video');
     if (video) {
-      video.playbackRate = 0.39; // Adjust the value as needed (e.g., 0.5 for half the normal speed)
+      video.playbackRate = 0.39;
     }
   }, []);
 
