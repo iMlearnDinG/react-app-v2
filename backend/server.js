@@ -12,7 +12,6 @@ const util = require('util');
 const compression = require('compression');
 const https = require('https');
 const fs = require('fs');
-const path = require('path');
 require('dotenv').config({ path: "C:\\codeProjects\\react-app-v2\\.env" });
 require('./jobs/scheduledJobs');
 
@@ -21,7 +20,6 @@ require('./jobs/scheduledJobs');
 const app = express();
 const serverPort = process.env.REACT_APP_SERVER_PORT;
 const mongoDBURL = process.env.REACT_APP_MONGODB_URL;
-
 
 const bunyan = require('bunyan');
 const log = bunyan.createLogger({
@@ -75,16 +73,6 @@ const corsOptions = {
   allowedHeaders: ['Content-Type', 'Authorization'],
   credentials: true
 };
-
-// SSL/TLS certificate and private key paths
-const sslKeyPath = "C:\\codeProjects\\react-app-v2\\ssl\\private.key";
-const sslCertPath = "C:\\codeProjects\\react-app-v2\\ssl\\certificate.crt";
-
-// Read the SSL/TLS certificate and private key files
-const sslKey = fs.readFileSync(sslKeyPath);
-const sslCert = fs.readFileSync(sslCertPath);
-
-const credentials = { key: sslKey, cert: sslCert };
 
 app.use(
   session({
@@ -144,10 +132,7 @@ app.use((err, req, res, next) => {
   res.status(500).json({ success: false, data: null, error: 'Internal Server Error' });
 });
 
-// Create the HTTPS server
-const server = https.createServer(credentials, app);
-
-server.listen(serverPort, () => {
+const server = app.listen(serverPort, () => {
   log.info(`Server running on port ${serverPort}`);
 });
 
