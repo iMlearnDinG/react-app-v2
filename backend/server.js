@@ -9,10 +9,6 @@ const MongoStore = require('connect-mongo');
 const rateLimit = require('express-rate-limit');
 const helmet = require('helmet');
 const util = require('util');
-const compression = require('compression');
-const https = require('https');
-const fs = require('fs');
-const path = require('path');
 require('dotenv').config({ path: "C:\\codeProjects\\react-app-v2\\.env" });
 require('./jobs/scheduledJobs');
 
@@ -32,12 +28,6 @@ const log = bunyan.createLogger({
         }
     ]
 });
-
-// Load SSL certificate and key
-const sslOptions = {
-  key: fs.readFileSync("C:\\codeProjects\\react-app-v2\\ssl\\private.key"), // Replace with the path to your private key
-  cert: fs.readFileSync("C:\\codeProjects\\react-app-v2\\ssl\\certificate.crt"), // Replace with the path to your SSL certificate
-};
 
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
@@ -104,7 +94,6 @@ app.use(limiter);
 app.use(helmet());
 app.use(passport.initialize());
 app.use(passport.session());
-app.use(compression());
 
 
 mongoose.connect(mongoDBURL, {
@@ -132,19 +121,16 @@ app.get('/api/check-session', (req, res) => {
 
 
 // Serve static files from the React app
-app.use(express.static('build'));
-
-// All other routes should redirect to the index.html
-app.get('*', (req, res) => {
-  res.sendFile(path.resolve(__dirname, 'build', 'index.html'));
-});
+app.use(express.static('build'))
 
 app.use((err, req, res, next) => {
   log.error(err);
   res.status(500).json({ success: false, data: null, error: 'Internal Server Error' });
 });
 
-const server = https.createServer(sslOptions, app);
+const server = app.listen(serverPort, () => {
+  log.info(`Server running on port ${serverPort}`);
+});
 
 app.use((req, res, next) => {
   console.log(`Received request: ${req.method} ${req.path}`);

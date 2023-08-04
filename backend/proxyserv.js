@@ -19,7 +19,7 @@ const proxyScript = httpProxy.createProxyServer();
 
 // Backend server configuration
 const backendPort = process.env.REACT_APP_SERVER_PORT;
-const backendUrl = `http://220.233.36.49:${backendPort}`;
+const backendUrl = `http://localhost:${backendPort}`;
 
 // Frontend server configuration
 const frontendPort = 3000;
