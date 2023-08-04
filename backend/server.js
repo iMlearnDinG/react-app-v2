@@ -12,6 +12,7 @@ const util = require('util');
 const compression = require('compression');
 const https = require('https');
 const fs = require('fs');
+const path = require('path');
 require('dotenv').config({ path: "C:\\codeProjects\\react-app-v2\\.env" });
 require('./jobs/scheduledJobs');
 
@@ -125,7 +126,12 @@ app.get('/api/check-session', (req, res) => {
 
 
 // Serve static files from the React app
-app.use(express.static('build'))
+app.use(express.static('build'));
+
+// All other routes should redirect to the index.html
+app.get('*', (req, res) => {
+  res.sendFile(path.resolve(__dirname, 'build', 'index.html'));
+});
 
 app.use((err, req, res, next) => {
   log.error(err);
