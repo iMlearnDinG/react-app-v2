@@ -33,6 +33,12 @@ const log = bunyan.createLogger({
     ]
 });
 
+// Load SSL certificate and key
+const sslOptions = {
+  key: fs.readFileSync("C:\\codeProjects\\react-app-v2\\ssl\\private.key"), // Replace with the path to your private key
+  cert: fs.readFileSync("C:\\codeProjects\\react-app-v2\\ssl\\certificate.crt"), // Replace with the path to your SSL certificate
+};
+
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
   max: 100, // limit each IP to 100 requests per windowMs
@@ -138,9 +144,7 @@ app.use((err, req, res, next) => {
   res.status(500).json({ success: false, data: null, error: 'Internal Server Error' });
 });
 
-const server = app.listen(serverPort, () => {
-  log.info(`Server running on port ${serverPort}`);
-});
+const server = https.createServer(sslOptions, app);
 
 app.use((req, res, next) => {
   console.log(`Received request: ${req.method} ${req.path}`);
