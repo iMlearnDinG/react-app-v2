@@ -28,8 +28,8 @@ const frontendPort = 3000;
 const frontendUrl = `${process.env.REACT_APP_CORS_ORIGIN}:${frontendPort}`;
 
 // SSL/TLS certificate and private key paths
-const sslKeyPath = './';
-const sslCertPath = '/path/to/your/certificate.crt';
+const sslKeyPath = "C:\\codeProjects\\react-app-v2\\ssl\\private.key";
+const sslCertPath = "C:\\codeProjects\\react-app-v2\\ssl\\certificate.crt";
 const sslOptions = {
   key: fs.readFileSync(sslKeyPath),
   cert: fs.readFileSync(sslCertPath),
