@@ -39,13 +39,13 @@
 }
   
 .register-image1 {
-    width: 55%;
+    width: 45%;
     max-width: 800px;
     margin-bottom: 1%;
 }
   
 .register-image2 {
-    width: 55%;
+    width: 45%;
     max-width: 800px;
     margin-top: 1%;
 }
@@ -74,7 +74,7 @@
 .register-input {
     padding: 5px;
     border-width: 2px;
-    border: 3px ridge goldenrod;
+    border: 1px ridge goldenrod;
     border-radius: 4px;
     font-size: 85%;
     color: whitesmoke;
@@ -84,6 +84,7 @@
     height: 1.5vh;
     background-color: #33373a;
     text-align: center;
+    margin: 3px;
 }
 
 .register-input:not(:last-child) {
@@ -105,7 +106,7 @@
     display: flex;
   }
   
-  .register-button,
+  .register-button1,
   .exit-button {
     display: inline-flex;
     justify-content: center;
@@ -126,7 +127,7 @@
     max-width: 175px;
   }
   
-  .register-button:hover {
+  .register-button1:hover {
     background-color: gold;
     color: black;
   }

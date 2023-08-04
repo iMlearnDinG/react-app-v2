@@ -1,28 +1,39 @@
 const express = require('express');
 const httpProxy = require('http-proxy');
-require('dotenv').config({ path: "C:\\Users\\User\\PycharmProjects\\react-app-v2\\.env" });
+const https = require('https');
+const fs = require('fs');
+const path = require('path');
+require('dotenv').config({ path: "C:\\codeProjects\\react-app-v2\\.env" });
 
 const bunyan = require('bunyan');
 const log = bunyan.createLogger({
-    name: 'react-proxy',
-    streams: [
-        {
-            level: 'info',
-            path: 'C:\\logs\\proxy.txt'  // log INFO and above to a file
-        }
-    ]
+  name: 'react-proxy',
+  streams: [
+    {
+      level: 'info',
+      path: 'C:\\logs\\proxy.txt'  // log INFO and above to a file
+    }
+  ]
 });
 
 const app = express();
 const proxyScript = httpProxy.createProxyServer();
 
 // Backend server configuration
-const backendPort = process.env.SERVER_PORT;
+const backendPort = process.env.REACT_APP_SERVER_PORT;
 const backendUrl = `http://localhost:${backendPort}`;
 
 // Frontend server configuration
 const frontendPort = 3000;
-const frontendUrl = `${process.env.CORS_ORIGIN}:${frontendPort}`;
+const frontendUrl = `${process.env.REACT_APP_CORS_ORIGIN}:${frontendPort}`;
+
+// SSL/TLS certificate and private key paths
+const sslKeyPath = './';
+const sslCertPath = '/path/to/your/certificate.crt';
+const sslOptions = {
+  key: fs.readFileSync(sslKeyPath),
+  cert: fs.readFileSync(sslCertPath),
+};
 
 // Proxy API requests to the backend server
 app.all('/api/*', (req, res) => {
@@ -53,8 +64,8 @@ proxyScript.on('error', (err, req, res) => {
   }
 });
 
-// Start the server
-const port = process.env.PROXY_PORT;
-app.listen(port, () => {
+// Start the HTTPS server
+const port = process.env.REACT_APP_PROXY_PORT;
+https.createServer(sslOptions, app).listen(port, () => {
   log.info(`Proxy server running on port ${port}`);
 });

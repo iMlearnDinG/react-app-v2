@@ -7,7 +7,6 @@ import Lobby from './components/Lobby';
 import Game from './components/Game';
 import Menu from './components/Menu';
 import SessionRenewal from './SessionRenewal';
-import WaitingRoom from './components/waitingRoom';
 import { LobbyProvider } from './config/LobbyContext'; 
 
 
@@ -43,9 +42,8 @@ function App() {
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
               <Route path="/lobby" element={<PrivateRoute><Lobby /></PrivateRoute>} />
-              <Route path="/game" element={<PrivateRoute><Game /></PrivateRoute>} />
+              <Route path="/game/:lobbyId" element={<PrivateRoute><Game /></PrivateRoute>} /> {/* Updated line */}
               <Route path="/menu" element={<PrivateRoute><Menu /></PrivateRoute>} />
-              <Route path="/waiting-room" element={<PrivateRoute><WaitingRoom /></PrivateRoute>} /> {/* Add this line */}
             </Routes>
           </LobbyProvider> 
         </AuthProvider>

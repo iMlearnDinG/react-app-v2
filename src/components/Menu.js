@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import axios from 'axios';
+import axios from '../config/axiosConfig';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../config/AuthContext';
 
@@ -14,7 +14,7 @@ function Menu() {
       });
   
       if (res.data.success) {
-        navigate('/waiting-room'); // redirect the user to the waiting room page after successful matchmaking
+        navigate('/lobby'); // redirect the user to the waiting room page after successful matchmaking
       } else {
         console.error(res.data.error);
       }

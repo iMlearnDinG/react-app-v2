@@ -1,22 +1,22 @@
 {
   "files": {
-    "main.css": "./static/css/main.68743c6c.css",
-    "main.js": "./static/js/main.8707ae9a.js",
-    "static/js/787.eafbcf31.chunk.js": "./static/js/787.eafbcf31.chunk.js",
-    "static/media/video.mp4": "./static/media/video.dfce9f6bf2ca4d594d97.mp4",
-    "static/media/register-image.png": "./static/media/register-image.c1afdb67ecfd30fad055.png",
-    "static/media/login-image1.png": "./static/media/login-image1.aa6482d1c02094c36263.png",
-    "static/media/register-image3.png": "./static/media/register-image3.b8aae927aa93a3806031.png",
-    "static/media/register-image1.png": "./static/media/register-image1.2d38bddbd82a721b2dc7.png",
-    "static/media/register-image2.png": "./static/media/register-image2.2d38bddbd82a721b2dc7.png",
-    "static/media/login-image.png": "./static/media/login-image.920dfc9281c23e7217bb.png",
-    "index.html": "./index.html",
-    "main.68743c6c.css.map": "./static/css/main.68743c6c.css.map",
-    "main.8707ae9a.js.map": "./static/js/main.8707ae9a.js.map",
-    "787.eafbcf31.chunk.js.map": "./static/js/787.eafbcf31.chunk.js.map"
+    "main.css": "/react-app-v2/static/css/main.f85b1373.css",
+    "main.js": "/react-app-v2/static/js/main.a8e8722f.js",
+    "static/js/787.eafbcf31.chunk.js": "/react-app-v2/static/js/787.eafbcf31.chunk.js",
+    "static/media/video.mp4": "/react-app-v2/static/media/video.dfce9f6bf2ca4d594d97.mp4",
+    "static/media/register-image.png": "/react-app-v2/static/media/register-image.c1afdb67ecfd30fad055.png",
+    "static/media/login-image1.png": "/react-app-v2/static/media/login-image1.aa6482d1c02094c36263.png",
+    "static/media/register-image3.png": "/react-app-v2/static/media/register-image3.b8aae927aa93a3806031.png",
+    "static/media/register-image1.png": "/react-app-v2/static/media/register-image1.2d38bddbd82a721b2dc7.png",
+    "static/media/register-image2.png": "/react-app-v2/static/media/register-image2.2d38bddbd82a721b2dc7.png",
+    "static/media/login-image.png": "/react-app-v2/static/media/login-image.920dfc9281c23e7217bb.png",
+    "index.html": "/react-app-v2/index.html",
+    "main.f85b1373.css.map": "/react-app-v2/static/css/main.f85b1373.css.map",
+    "main.a8e8722f.js.map": "/react-app-v2/static/js/main.a8e8722f.js.map",
+    "787.eafbcf31.chunk.js.map": "/react-app-v2/static/js/787.eafbcf31.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.68743c6c.css",
-    "static/js/main.8707ae9a.js"
+    "static/css/main.f85b1373.css",
+    "static/js/main.a8e8722f.js"
   ]
 }
