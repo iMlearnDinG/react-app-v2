@@ -215,7 +215,7 @@ h2.glow-text {
   
 .signup-section p {
     text-align: center;
-    font-size: 55%;
+    font-size: 1rem;
     color: whitesmoke;
     font-family: "High Tower Text";
     font-weight: normal;
@@ -235,7 +235,7 @@ h2.glow-text {
     color: goldenrod;
     background-color: #282c34;
     cursor: pointer;
-    font-size: 55%;
+    font-size: 85%;
     font-family: "Book Antiqua";
     transition-duration: 0.85s;
     box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.5);

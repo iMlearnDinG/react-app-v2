@@ -9,6 +9,7 @@ const MongoStore = require('connect-mongo');
 const rateLimit = require('express-rate-limit');
 const helmet = require('helmet');
 const util = require('util');
+const compression = require('compression');
 require('dotenv').config({ path: "C:\\codeProjects\\react-app-v2\\.env" });
 require('./jobs/scheduledJobs');
 
@@ -94,6 +95,7 @@ app.use(limiter);
 app.use(helmet());
 app.use(passport.initialize());
 app.use(passport.session());
+app.use(compression());
 
 
 mongoose.connect(mongoDBURL, {

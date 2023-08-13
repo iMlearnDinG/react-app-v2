@@ -1,7 +1,7 @@
 {
   "name": "react-app-v2",
   "version": "0.1.0",
-  "homepage": "https://imlearnding.github.io/react-app-v2",
+  "homepage": ".",
   "proxy": "https://localhost:8080",
   "private": true,
   "dependencies": {

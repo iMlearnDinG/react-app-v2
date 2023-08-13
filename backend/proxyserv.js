@@ -1,17 +1,17 @@
 const express = require('express');
 const httpProxy = require('http-proxy');
-const path = require('path');
+const https = require('https');
 require('dotenv').config({ path: "C:\\codeProjects\\react-app-v2\\.env" });
 
 const bunyan = require('bunyan');
 const log = bunyan.createLogger({
-    name: 'react-proxy',
-    streams: [
-        {
-            level: 'info',
-            path: 'C:\\logs\\proxy.txt'  // log INFO and above to a file
-        }
-    ]
+  name: 'react-proxy',
+  streams: [
+    {
+      level: 'info',
+      path: 'C:\\logs\\proxy.txt'  // log INFO and above to a file
+    }
+  ]
 });
 
 const app = express();
@@ -55,7 +55,7 @@ proxyScript.on('error', (err, req, res) => {
 });
 
 // Start the server
-const port = process.env.REACT_APP_PROXY_PORT;
+const port = process.env.PROXY_PORT;
 app.listen(port, () => {
   log.info(`Proxy server running on port ${port}`);
 });
