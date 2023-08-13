@@ -73,7 +73,7 @@ function Login() {
     if (video) {
       video.playbackRate = 0.39;
     }
-  }, []);
+  }, [navigate, setUser]);
 
 
   return (

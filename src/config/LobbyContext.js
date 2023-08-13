@@ -7,7 +7,7 @@ export function LobbyProvider({ children }) {
   const [lobby, setLobby] = useState(null);
   const [players, setPlayers] = useState([]);
   const [status, setStatus] = useState('waiting');
-  const [loading, setLoading] = useState(true);
+  const [loading] = useState(true);
   const [gameId, setGameId] = useState(null);
   const navigate = useNavigate();
 
@@ -41,7 +41,7 @@ export function LobbyProvider({ children }) {
     if (lobby) {
       fetchLobby(lobby._id);
     }
-  }, [lobby]);
+  },);
 
   const joinGame = async (gameId) => {
     const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/multiplayer/:lobbyId`, {

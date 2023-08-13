@@ -3,7 +3,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { LobbyContext } from '../config/LobbyContext';
 
 function Lobby() {
-  const { lobby, setLobby, leaveGame, fetchLobby, gameId } = useContext(LobbyContext);  // Add gameId
+  const {setLobby, leaveGame, fetchLobby, gameId } = useContext(LobbyContext);  // Add gameId
   const navigate = useNavigate();
   const location = useLocation();
 
